@@ -1,0 +1,28 @@
+workspace(name = "top_level")
+
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+RULES_HUGO_COMMIT = "f62403759924131099c7aea336acd3447f020427"
+RULES_HUGO_SHA256 = "af311034eeaf70bf4e58af87ec9c5f25c954cd91e2daf5e09f3652310ff8b53d"
+
+http_archive(
+    name = "build_stack_rules_hugo",
+    sha256 = RULES_HUGO_SHA256,
+    strip_prefix = "rules_hugo-%s" % RULES_HUGO_COMMIT,
+    url = "https://github.com/stackb/rules_hugo/archive/%s.zip" % RULES_HUGO_COMMIT,
+)
+
+load("@build_stack_rules_hugo//hugo:rules.bzl", "github_hugo_theme", "hugo_repository")
+
+hugo_repository(
+    name = "hugo",
+    extended = True,
+    version = "0.63.2",
+)
+
+github_hugo_theme(
+    name = "com_github_alex_shpak_hugo_book",
+    commit = "07048f7bf5097435a05c1e8b77241b0e478023c2",  # June 3, 2019
+    owner = "alex-shpak",
+    repo = "hugo-book",
+)
